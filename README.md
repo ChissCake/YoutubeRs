@@ -7,9 +7,9 @@
     - Express.js
     - React
     - Node.js
-- Inspect Youtube8M Database
+- Inspect Youtube8M Database (Jack)
 - Research Elastic search, potentially use as database
-- Explore Youtube API
+- Explore Youtube API (Jack)
 
 
 ### Important Links 
