@@ -24,7 +24,7 @@
 -   Get into the backend folder
 -   Type "node server.js" in commmand line
 -   Go to http://localhost:3000/search-with-googleapis?search_query=searchQuery
--   Change seachQuery to anything you want ot search
+-   Change seachQuery to anything you want to search
 
 ### Important Links 
 - [Explore Express.Js](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment)
