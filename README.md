@@ -20,7 +20,11 @@
 -	Find a framework to use for CSS.
 -	Decide how to use Elasticsearch on our data from YouTube.
 
-
+### Using the YouTube API in backend folder
+-   Get into the backend folder
+-   Type "node server.js" in commmand line
+-   Go to http://localhost:3000/search-with-googleapis?search_query=searchQuery
+-   Change seachQuery to anything you want ot search
 
 ### Important Links 
 - [Explore Express.Js](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment)
