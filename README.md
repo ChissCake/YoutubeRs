@@ -11,6 +11,16 @@
 - Research Elastic search, potentially use as database (Chris)
 - Explore Youtube API (Jack)
 
+-	Refine idea
+-	Create a database
+-	Create the Schema for the database.
+-	Use YouTube API
+-	Set up backend files for YouTube API and website
+-	Create basic front-end functionality.
+-	Find a framework to use for CSS.
+-	Decide how to use Elasticsearch on our data from YouTube.
+
+
 
 ### Important Links 
 - [Explore Express.Js](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment)
