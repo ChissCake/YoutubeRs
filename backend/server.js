@@ -12,6 +12,7 @@ const YouTube = google.youtube({
     version: 'v3',
     auth: apiKey,  
 });
+
 // example request link https://www.googleapis.com/youtube/v3/search?key=apiKey&type=video&part=snippet&q=test
 
 // Basic get call
@@ -31,6 +32,10 @@ app.get('/search-with-googleapis', async (req, res, next) => {
         });
         // Raw Json
         //res.send(response);
+
+        // Break down to description
+        // const description = response.data.items.map((item) => item.snippet.description);
+        // res.send(description);
 
         // Break down to just titles
         const titles = response.data.items.map((item) => item.snippet.title);
