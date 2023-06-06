@@ -4,6 +4,9 @@
 // Libraries and constants
 require('dotenv').config();
 
+//MongoDB
+//require("./database/databse").connect();
+
 const {google} = require('googleapis');
 const express = require("express");
 const app = express();
