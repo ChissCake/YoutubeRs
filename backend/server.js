@@ -70,3 +70,36 @@ app.get('/comments-with-googleapis', async (req, res, next) => {
 app.listen(port, () => {
     console.log("App is running.");
 });
+
+
+app.get('/channels-with-googleapis', async (req, res, next) => {
+    try {
+        const channelQ = req.query.channel_query;
+
+        const response = await YouTube.channels.list({
+            part: "snippet",
+            forUsername: channelQ,
+        });
+
+        res.send(response);
+
+    } catch (err) {
+        next(err);
+    };
+});
+
+app.get('/playlists-with-googleapis', async (req, res, next) => {
+    try {
+        const playlistQ = req.query.playlist_query;
+
+        const response = await YouTube.playlists.list({
+            part: "snippet",
+            channelId: playlistQ,
+        });
+        const titles = response.data.items.map((item) => item.snippet.title);
+        res.send(titles);
+
+    } catch (err) {
+        next(err);
+    };
+});
