@@ -5,7 +5,7 @@
 require('dotenv').config();
 
 //MongoDB
-//require("./database/databse").connect();
+require("./database").connect();
 
 const {google} = require('googleapis');
 const express = require("express");
