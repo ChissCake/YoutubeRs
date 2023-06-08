@@ -2,16 +2,21 @@
 // https://github.com/ThioJoe/YT-Spammer-Purge/wiki/Understanding-YouTube-API-Quota-Limits
 
 // Libraries and constants
+require('dotenv').config();
+
+//MongoDB
+//require("./database/databse").connect();
+
 const {google} = require('googleapis');
 const express = require("express");
 const app = express();
 const port = 3000;
-const apiKey = "AIzaSyBlB2f_5LdlBNQzh0ATcyu8tW3RY2hHeHA"; // Make private later
-const baseUrl = "https://www.googleapis.com/youtube/v3"
+// const baseUrl = "https://www.googleapis.com/youtube/v3"
 const YouTube = google.youtube({
     version: 'v3',
-    auth: apiKey,  
+    auth: process.env.APIKEY,  
 });
+
 // example request link https://www.googleapis.com/youtube/v3/search?key=apiKey&type=video&part=snippet&q=test
 
 // Basic get call
@@ -32,9 +37,14 @@ app.get('/search-with-googleapis', async (req, res, next) => {
         // Raw Json
         //res.send(response);
 
+        // Break down to description
+        // const description = response.data.items.map((item) => item.snippet.description);
+        // res.send(description);
+
         // Break down to just titles
         const titles = response.data.items.map((item) => item.snippet.title);
         res.send(titles);
+
     } catch (err) {
         next(err);
     };
