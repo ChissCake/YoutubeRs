@@ -1,6 +1,4 @@
-.App {
-  text-align: center;
-}
+
 
 .App-logo {
   height: 40vmin;
@@ -36,3 +34,46 @@
     transform: rotate(360deg);
   }
 }
+
+.App {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  padding: 0 20px;
+}
+
+form {
+  display: flex;
+  align-items: center;
+}
+
+input {
+  
+  
+  margin-right: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+img{
+  margin-right: 10px;
+  padding: 0px;
+
+}
+
+button {
+  
+  padding: 8px 16px;
+  background-color: #ff00b3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
