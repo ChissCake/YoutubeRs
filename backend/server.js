@@ -96,10 +96,34 @@ app.get('/playlists-with-googleapis', async (req, res, next) => {
             part: "snippet",
             channelId: playlistQ,
         });
-        const titles = response.data.items.map((item) => item.snippet.title);
-        res.send(titles);
+
+        res.send(response)
+
+        // const titles = response.data.items.map((item) => item.snippet.title);
+        // res.send(titles);
 
     } catch (err) {
         next(err);
     };
 });
+
+app.get('/commentThreads-with-googleapis', async (req, res, next) => {
+    try {
+        const ctQ = req.query.ct_query;
+
+        const response = await YouTube.commentThreads.list({
+            part: "snippet",
+            videoId: ctQ,
+            maxResults: 100,
+        });
+
+        //res.send(response)
+
+        const comments = response.data.items.map((item) => item.snippet.topLevelComment.snippet.textOriginal);
+        res.send(comments);
+
+    } catch (err) {
+        next(err);
+    };
+});
+
