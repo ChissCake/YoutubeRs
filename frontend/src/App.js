@@ -11,8 +11,9 @@ import SignUp from './pages/signup';
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const image = {
-    iamgeUrl: 'https://yt3.googleusercontent.com/584JjRp5QMuKbyduM_2k5RlXFqHJtQ0qLIPZpwbUjMJmgzZngHcam5JMuZQxyzGMV5ljwJRl0Q=s176-c-k-c0x00ffffff-no-rj',
+    iamgeUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/159px-YouTube_full-color_icon_%282017%29.svg.png?2021101507481',
     imageSize: 100,
+    width: 120,
   }
   
   const search = (e) => {
@@ -32,18 +33,23 @@ function App() {
           <Route path='/search' component={Search} />
           <Route path='/sign-up' component={SignUp} />
         </Routes>
-      </Router>
-      <h1 >YourTubeRs</h1>
+         </Router>
+       <div className="home-page">
+
+       <div className="youtube-text">YourTubeRs</div>
+      
     
+      
+      
       <img
         src = {image.iamgeUrl}
         style={{
-            width: image.imageSize,
+            width: image.width,
             height: image.imageSize
          }}
 
       ></img>
-      <from onsubmit = {search}>
+        <from onsubmit = {search}>
         <input 
             type = "text"
             value = {searchTerm}
@@ -52,6 +58,10 @@ function App() {
         ></input>
         <button type="submit">Search</button>
       </from>
+      
+      </div>
+      
+
     </div>
   );
 }
