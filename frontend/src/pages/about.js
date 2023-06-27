@@ -10,7 +10,7 @@ return (
 		height: '100vh'
 	}}
 	>
-	<h1>We are YouTubeRs !!!</h1>
+	<h1>We are YourTuberRs</h1>
 	</div>
 );
 };
