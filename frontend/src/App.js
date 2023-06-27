@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import Navbar from './components';
+import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages';
 import About from './pages/about';
@@ -27,14 +27,14 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/' exact component={Home} />
-          <Route path='/about' component={About} />
-          <Route path='/events' component={Events} />
-          <Route path='/search' component={Search} />
-          <Route path='/sign-up' component={SignUp} />
+          <Route path='/about' element={<About />} />
+          <Route path='/events' element={<Events />} />
+          <Route path='/search' element={<Search />} />
+          <Route path='/sign-up' element={<SignUp />} />
         </Routes>
          </Router>
-       <div className="home-page">
+
+          <div className="home-page">
 
        <div className="youtube-text">YourTubeRs</div>
       
@@ -60,8 +60,7 @@ function App() {
       </from>
       
       </div>
-      
-
+       
     </div>
   );
 }
