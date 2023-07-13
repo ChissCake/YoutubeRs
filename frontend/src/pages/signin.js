@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SignUpForm = () => {
+const SignInForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
 
-  const handleSignUp = (e) => {
+  const handleSignIn = (e) => {
     e.preventDefault();
 
-    // Here you can perform the sign-up logic, such as sending the data to a server or saving it in local storage
+    // Here you can perform the sign-in logic, such as validating the credentials
     console.log('Username:', username);
     console.log('Password:', password);
 
-    // After sign up, you can redirect the user to the sign-in page or any other page
-    navigate('/signin');
+    // After sign in, you can redirect the user to their profile page or any other authenticated page
+    navigate('/profile');
   };
 
   return (
     <div>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignUp}>
+      <h2>Sign In</h2>
+      <form onSubmit={handleSignIn}>
         <label>
           Username:
           <input
@@ -42,10 +42,10 @@ const SignUpForm = () => {
           />
         </label>
         <br />
-        <button type="submit">Sign Up</button>
+        <button type="submit">Sign In</button>
       </form>
     </div>
   );
 };
 
-export default SignUpForm;
+export default SignInForm;
