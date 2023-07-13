@@ -11,7 +11,7 @@ const Result = ({ searchTerm }) => {
       }}
     >
       <h1>
-        Search Results for: <span>{searchTerm}</span>
+        Top 5 Search Result For: <span>{searchTerm}</span>
       </h1>
     </div>
   );
