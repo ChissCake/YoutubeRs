@@ -6,7 +6,7 @@ return (
 	style={{
 		display: 'flex',
 		justifyContent: 'Right',
-		alignItems: 'Right',
+		alignItems: 'Left',
 		height: '100vh'
 	}}
 	>
