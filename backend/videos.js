@@ -94,7 +94,10 @@ app.get('/comment-threads', asyncHandler(async (req, res, next) => {
     const comment = response.data.items.map((item) => item.snippet.topLevelComment.snippet.textOriginal);
     const commenterChannel = response.data.items.map((item) => item.snippet.topLevelComment.snippet.authorDisplayName);
     const channelComment = toDictionary(comment, commenterChannel)
-    res.send(channelComment)
+    //res.send(comment)
+    for (let i = 0; i < 100; i++){
+        res.write(comment[i] + "\n");
+    }
     //res.send(response)
 
 }));
