@@ -5,7 +5,7 @@
 require('dotenv').config();
 
 //MongoDB
-//require("./database/databse").connect();
+//require("./database").connect();
 
 const {google} = require('googleapis');
 const express = require("express");
@@ -31,19 +31,19 @@ app.get('/search-with-googleapis', async (req, res, next) => {
         const response = await YouTube.search.list({
             part: "snippet",
             q: searchQuery,
-            type: 'video',
+            type: 'channel',
             maxResults: 25,
         });
         // Raw Json
-        //res.send(response);
+        res.send(response);
 
         // Break down to description
         // const description = response.data.items.map((item) => item.snippet.description);
         // res.send(description);
 
         // Break down to just titles
-        const titles = response.data.items.map((item) => item.snippet.title);
-        res.send(titles);
+        //const titles = response.data.items.map((item) => item.snippet.title);
+        //res.send(titles);
 
     } catch (err) {
         next(err);
@@ -54,10 +54,10 @@ app.get('/search-with-googleapis', async (req, res, next) => {
 app.get('/comments-with-googleapis', async (req, res, next) => {
     try {
 
-        const response = await YouTube.comments.list({
+        const response = await YouTube.commentThreads.list({
             part: "snippet",
-            parentId: "UgzDE2tasfmrYLyNkGt4AaABAg",
-            maxResults: 20,
+            videoId: "OVBn43UZ04c",
+            maxResults: 50,
         });
         // Raw Json
         res.send(response);
@@ -70,3 +70,63 @@ app.get('/comments-with-googleapis', async (req, res, next) => {
 app.listen(port, () => {
     console.log("App is running.");
 });
+
+
+app.get('/channels-with-googleapis', async (req, res, next) => {
+    try {
+        const channelQ = req.query.channel_query;
+
+        const response = await YouTube.channels.list({
+            part: "statistics",
+            forUsername: channelQ,
+        });
+
+        res.send(response);
+
+
+
+    } catch (err) {
+        next(err);
+    };
+});
+
+app.get('/playlists-with-googleapis', async (req, res, next) => {
+    try {
+        const playlistQ = req.query.playlist_query;
+
+        const response = await YouTube.playlists.list({
+            part: "snippet",
+            channelId: playlistQ,
+            maxResults: 50,
+        });
+
+        res.send(response)
+
+        // const titles = response.data.items.map((item) => item.snippet.title);
+        // res.send(titles);
+
+    } catch (err) {
+        next(err);
+    };
+});
+
+app.get('/commentThreads-with-googleapis', async (req, res, next) => {
+    try {
+        const ctQ = req.query.ct_query;
+
+        const response = await YouTube.commentThreads.list({
+            part: "snippet",
+            videoId: ctQ,
+            maxResults: 100,
+        });
+
+        //res.send(response)
+
+        const comments = response.data.items.map((item) => item.snippet.topLevelComment.snippet.textOriginal);
+        res.send(comments);
+
+    } catch (err) {
+        next(err);
+    };
+});
+
