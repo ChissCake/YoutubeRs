@@ -1,7 +1,11 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import './result.css';
 
 const SearchResultPage = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const searchTerm = searchParams.get('query');
   const searchResults = [
     {
       id: 'videoId1',
@@ -37,7 +41,7 @@ const SearchResultPage = () => {
 
   return (
     <div className="search-results-container">
-      <h1>Top 5 Search Results:</h1>
+      <h1>Top 5 Search Results: {searchTerm}</h1>
       {searchResults.map((result) => (
         <div className="search-result-item" key={result.id}>
           <a href={`/channel/${result.id}`}>

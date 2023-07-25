@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function Home(){
    
     const [searchTerm, setSearchTerm] = useState('');
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     const image = {
         imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/159px-YouTube_full-color_icon_%282017%29.svg.png?2021101507481',
@@ -15,13 +13,10 @@ function Home(){
         width: 120,
       };
     
-      const search = (e) => {
+    const search = (e) => {
         e.preventDefault();
         console.log('Search term:', searchTerm);
-        history(`/result?searchTerm=${encodeURIComponent(searchTerm)}`);
-    
-  
-
+        navigate(`/result?query=${encodeURIComponent(searchTerm)}`);
       };
 
 return (
@@ -42,10 +37,10 @@ return (
                      <input 
                         type = "text"
                         value = {searchTerm}
-                         onChange={(e) => setSearchTerm(e.target.value)}
-                         placeholder="Search..."
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Search..."
                      ></input>
-                 <button onClick={()=> history("/result")}>Search</button>
+                 <button onClick={search}>Search</button>
                  </form>
         </div>
     );
