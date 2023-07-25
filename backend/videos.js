@@ -90,14 +90,20 @@ app.get('/comment-threads', asyncHandler(async (req, res, next) => {
         maxResults: 100,
         order: "relevance",
     });
+
     
+
     const comment = response.data.items.map((item) => item.snippet.topLevelComment.snippet.textOriginal);
     const commenterChannel = response.data.items.map((item) => item.snippet.topLevelComment.snippet.authorDisplayName);
-    const channelComment = toDictionary(comment, commenterChannel)
-    //res.send(comment)
-    for (let i = 0; i < 100; i++){
+    const channelComment = toDictionary(comment, commenterChannel);
+    
+    var secondCall = require('./sentiment.js');
+    var sum = 0;
+    for (let i = 1; i < 100; i++){
         res.write(comment[i] + "\n");
+        sum = sum + secondCall(comment[i]);
     }
+    console.log(sum);
     //res.send(response)
 
 }));
