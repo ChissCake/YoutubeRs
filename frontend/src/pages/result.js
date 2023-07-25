@@ -40,10 +40,16 @@ const SearchResultPage = () => {
       <h1>Top 5 Search Results:</h1>
       {searchResults.map((result) => (
         <div className="search-result-item" key={result.id}>
+          <a href={`/channel/${result.id}`}>
           <img src={result.thumbnail} alt={result.channelName} />
+          </a>
           <div className="result-details">
+          <a href={`/channel/${result.id}`}>
             <h3>{result.channelName}</h3>
+            </a>
+            <a href={`/channel/${result.id}`}>
             <p>{result.subscribeAccount}</p>
+            </a>
           </div>
         </div>
       ))}

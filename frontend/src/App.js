@@ -10,6 +10,7 @@ import About from './pages/about';
 import Events from './pages/events';
 import SignUp from './pages/signup';
 import SignIn from './pages/signin';
+import ChannelPage from './pages/channel';
 
 
 
@@ -36,7 +37,7 @@ function App() {
 
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/result' element={<Result />} />
-
+        <Route path="/channel/:channelId" element={<ChannelPage/>} />
       </Routes>
       </div>
      
