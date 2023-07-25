@@ -1,6 +1,10 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-const Result = ({ searchTerm }) => {
+const Result = () => {
+  // Use the useParams hook to access the searchTerm from the URL
+  const { searchTerm } = useParams();
   return (
     <div
       style={{
@@ -11,7 +15,7 @@ const Result = ({ searchTerm }) => {
       }}
     >
       <h1>
-        Top 5 Search Result For: <span>{searchTerm}</span>
+        Top 5 Search Result For: {searchTerm}
       </h1>
     </div>
   );
