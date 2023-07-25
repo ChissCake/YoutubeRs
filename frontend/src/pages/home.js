@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
-import Result from './result'
 
 function Home(){
    
@@ -24,12 +23,6 @@ function Home(){
   
 
       };
-
-
-
-
-
-  
 
 return (
         
@@ -54,9 +47,6 @@ return (
                      ></input>
                  <button onClick={()=> history("/result")}>Search</button>
                  </form>
-                 
-       
-        
         </div>
     );
      }
