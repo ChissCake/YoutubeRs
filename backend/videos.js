@@ -59,7 +59,7 @@ app.get('/channel-videos', asyncHandler(async (req, res, next) => {
         part: "snippet",
         channelId: channelID,
         type: 'video',
-        maxResults: 25,
+        maxResults: 9,
         order: 'rating',
     });
         
@@ -81,11 +81,20 @@ app.get('/channel-videos', asyncHandler(async (req, res, next) => {
     for (let i = 1; i < comment.length; i++){
         sum = sum + secondCall(comment[i]);
     }
-    ratings.push(sum);
-    console.log(titles[c] + " " + ratings[c]);
+    ratings.push([titles[c], sum]);
+    console.log(ratings[c]);
 }
+    ratings.sort(function (a, b)
+    {
+        if(a[1]<b[1]){
+            return 1;
+        } else {
+            return -1;
+        }
+    });
+    console.log("sorted ratings");
     for(let v = 0; v < ids.length; v++){
-        res.write(titles[v] + " " + ratings[v] + "\n");
+        console.log(ratings[v]);
     }
 }));
 
