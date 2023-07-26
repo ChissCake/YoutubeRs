@@ -24,7 +24,10 @@ const secondCall = (review) => {
 
     const { SentimentAnalyzer, PorterStemmer } = natural;
     const analyzer = new SentimentAnalyzer('English', PorterStemmer, 'afinn');
-    const analysis = analyzer.getSentiment(filteredReview);
+    var analysis = analyzer.getSentiment(filteredReview);
+    if(isNaN(analysis)){
+        analysis = 0;
+    }
     return analysis;
 }
 module.exports = secondCall;

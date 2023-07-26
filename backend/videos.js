@@ -51,20 +51,42 @@ app.get('/search-with-googleapis', asyncHandler(async (req, res, next) => {
     res.send(channels)
 }));
 
+var secondCall = require('./sentiment.js');
 app.get('/channel-videos', asyncHandler(async (req, res, next) => {
-
+    const ratings = [];
     const channelID = req.query.channel_id;
-    const response = await YouTube.search.list({
+    const channelResponse = await YouTube.search.list({
         part: "snippet",
         channelId: channelID,
         type: 'video',
-        maxResults: 50,
+        maxResults: 25,
         order: 'rating',
     });
         
-    const titles = response.data.items.map((item) => item.snippet.title);
-    res.send(titles)
+    const titles = channelResponse.data.items.map((item) => item.snippet.title);
+    const ids = channelResponse.data.items.map((item) => item.id.videoId);
+    
+    for(let c = 0; c < ids.length; c++){
+    var videoID = ids[c];
+    var videoResponse = await YouTube.commentThreads.list({
+        part: "snippet",
+        videoId: videoID,
+        maxResults: 100,
+        order: "relevance",
+    });
 
+    var comment = videoResponse.data.items.map((item) => item.snippet.topLevelComment.snippet.textOriginal);
+
+    var sum = 0;
+    for (let i = 1; i < comment.length; i++){
+        sum = sum + secondCall(comment[i]);
+    }
+    ratings.push(sum);
+    console.log(titles[c] + " " + ratings[c]);
+}
+    for(let v = 0; v < ids.length; v++){
+        res.write(titles[v] + " " + ratings[v] + "\n");
+    }
 }));
 
 app.get('/videos-stats', asyncHandler(async (req, res, next) => {
@@ -104,6 +126,5 @@ app.get('/comment-threads', asyncHandler(async (req, res, next) => {
         sum = sum + secondCall(comment[i]);
     }
     console.log(sum);
-    //res.send(response)
 
 }));
