@@ -54,7 +54,7 @@ app.get('/channel-videos', asyncHandler(async (req, res, next) => {
         part: "snippet",
         channelId: channelID,
         type: 'video',
-        maxResults: 25,
+        maxResults: 9,
         order: 'rating',
     });
         
@@ -62,25 +62,39 @@ app.get('/channel-videos', asyncHandler(async (req, res, next) => {
     const ids = channelResponse.data.items.map((item) => item.id.videoId);
     
     for(let c = 0; c < ids.length; c++){
-    var videoID = ids[c];
-    var videoResponse = await YouTube.commentThreads.list({
-        part: "snippet",
-        videoId: videoID,
-        maxResults: 100,
-        order: "relevance",
-    });
+        var videoID = ids[c];
+        const video_stats = await YouTube.videos.list({
+            part: "statistics",
+            id: videoID,
+        });
+        const commentCount = video_stats.data.items.map((item) => item.statistics.commentCount);
+        var sum = 0;
+        if(commentCount[0] != null){
+            var videoResponse = await YouTube.commentThreads.list({
+                part: "snippet",
+                videoId: videoID,
+                maxResults: 100,
+                order: "relevance",
+            });
 
-    var comment = videoResponse.data.items.map((item) => item.snippet.topLevelComment.snippet.textOriginal);
+            var comment = videoResponse.data.items.map((item) => item.snippet.topLevelComment.snippet.textOriginal);
 
-    var sum = 0;
-    for (let i = 1; i < comment.length; i++){
-        sum = sum + secondCall(comment[i]);
+            for (let i = 1; i < comment.length; i++){
+                sum = sum + secondCall(comment[i]);
+            }
+        }
+        ratings.push([titles[c], ids[c], sum]);
     }
-    ratings.push(sum);
-    console.log(titles[c] + " " + ratings[c]);
-}
+    ratings.sort(function (a, b)
+    {
+        if(a[2]<b[2]){
+            return 1;
+        } else {
+            return -1;
+        }
+    });
     for(let v = 0; v < ids.length; v++){
-        res.write(titles[v] + " " + ratings[v] + "\n");
+        console.log(ratings[v]);
     }
 }));
 
