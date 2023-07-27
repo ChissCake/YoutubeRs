@@ -89,7 +89,6 @@ app.get('/channel-videos', asyncHandler(async (req, res, next) => {
             }
         }
         ratings.push([titles[c], ids[c], sum]);
-        console.log(c);
     }
     ratings.sort(function (a, b)
     {
@@ -99,7 +98,6 @@ app.get('/channel-videos', asyncHandler(async (req, res, next) => {
             return -1;
         }
     });
-    console.log("sorted ratings");
     for(let v = 0; v < ids.length; v++){
         console.log(ratings[v]);
     }
