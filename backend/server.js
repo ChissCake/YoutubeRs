@@ -9,6 +9,7 @@ require('dotenv').config();
 
 const {google} = require('googleapis');
 const express = require("express");
+const elasticClient = require('./elasticsearch/client');
 const app = express();
 const port = 3000;
 // const baseUrl = "https://www.googleapis.com/youtube/v3"

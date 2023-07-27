@@ -1,0 +1,8 @@
+{
+    "elastic": {
+        "cloudID": "Insert cloud ID",
+        "username": "elastic",
+        "password":"Insert password",
+        "apiKey": "Insert API Key"
+    }
+}
