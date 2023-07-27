@@ -153,7 +153,7 @@ app.get('/list-videos', asyncHandler(async (req, res, next) => {
 
 }));
 
-app.get('/videos-info', asyncHandler(async (req, res, next) => {
+app.get('/videos-stats', asyncHandler(async (req, res, next) => {
     const videoID = req.query.video_id;
     const response = await YouTube.videos.list({
         part: "snippet",

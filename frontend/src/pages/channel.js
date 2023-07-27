@@ -18,18 +18,23 @@ const ChannelPage = () => {
   const [videos, setVideos] = useState([]);
   const [channel, setChannel] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingVideos, setLoadingVideos] = useState(true);
 
   const getVideos = async () =>{
     try {
       const response = await axios.get(`/list-videos?channel_id=${channelId}`);
       console.log("It fetched the data")
-      const jsonData = response.data.data.items
+      const jsonData = response.data.data
       setVideos(jsonData)
-      //console.log(JSON.stringify(jsonData))
+      setLoadingVideos(false)
+      console.log(JSON.stringify(jsonData))
     } catch (error) {
       console.log("error fetching channels:", error);
+      setLoadingVideos(false)
     }
   }
+
+  
 
   const getChannel = async () =>{
     try {
@@ -47,7 +52,7 @@ const ChannelPage = () => {
   }
 
   useEffect(() => {
-    //getVideos();
+    getVideos();
     getChannel();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -132,8 +137,21 @@ const ChannelPage = () => {
       
       <div style={{ marginBottom: '50px' }}></div>
       <div className="sample-pictures-container">
-      <div className="grid-container">
-          
+        {loadingVideos ? ( // Show loading message or spinner while waiting for videos data
+          <div>Loading videos...</div>
+        ) : (
+          <div className="grid-container">
+            {videos.items.map((video) => (
+              <div key={video.snippet.title} className="grid-item">
+                <img src={video.snippet.thumbnails.default.url} />
+                <p>{video.snippet.title}</p>
+              </div>
+            ))}
+            
+          </div>
+        )}
+
+
         {/* {videos.map((video) => (
           <div key={video.id} className="grid-item">
             <img src={video.snippet.thumbnails.default.url} />
@@ -141,7 +159,6 @@ const ChannelPage = () => {
             <p>Total Views: 1</p>
           </div>
         ))} */}
-      </div>
       </div>
     </div>
   );
