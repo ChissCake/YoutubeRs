@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable jsx-a11y/alt-text */
+import React, { useState, useEffect } from 'react';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +24,7 @@ return (
         
         <div className = "home-page">
             
-            <div className = "youtube-text">YourtubeRs</div>
+            <div className = "youtube-text">YoutubeRs</div>
             <img 
                 src = {image.imageUrl}
                 style={{
@@ -33,14 +34,14 @@ return (
 
                 }}
                 ></img>
-                <form onsubmit = {search}>
+                <form onSubmit = {search}>
                      <input 
                         type = "text"
                         value = {searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         placeholder="Search..."
                      ></input>
-                 <button onClick={search}>Search</button>
+                 <button onClick={search} >Search</button>
                  </form>
         </div>
     );

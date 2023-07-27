@@ -1,4 +1,7 @@
 import React from 'react';
+
+import axios from 'axios';
+import {useEffect, useState} from 'react';
 import { useLocation } from 'react-router-dom';
 import './result.css';
 
@@ -6,60 +9,55 @@ const SearchResultPage = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchTerm = searchParams.get('query');
-  const searchResults = [
-    {
-      id: 'videoId1',
-      thumbnail: 'https://example.com/thumbnail1.jpg',
-      channelName: 'Channel 1',
-      subscribeAccount: '@CapstoneYouTubeRs',
-    },
-    {
-      id: 'videoId2',
-      thumbnail: 'https://example.com/thumbnail2.jpg',
-      channelName: 'Channel 2',
-      subscribeAccount: '@CapstoneYouTubeRs',
-    },
-    {
-      id: 'videoId3',
-      thumbnail: 'https://example.com/thumbnail3.jpg',
-      channelName: 'Channel 3',
-      subscribeAccount: '@CapstoneYouTubeRs',
-    },
-    {
-      id: 'videoId4',
-      thumbnail: 'https://example.com/thumbnail4.jpg',
-      channelName: 'Channel 4',
-      subscribeAccount: '@CapstoneYouTubeRs',
-    },
-    {
-      id: 'videoId5',
-      thumbnail: 'https://example.com/thumbnail5.jpg',
-      channelName: 'Channel 5',
-      subscribeAccount: '@CapstoneYouTubeRs',
-    },
-  ];
+
+  const [channels, setChannels] = useState([]);
+
+  const getChannels = async () =>{
+    try {
+      const response = await axios.get(`/search-with-googleapis?search_query=${searchTerm}`);
+      console.log("It fetched the data")
+      const jsonData = response.data.data.items
+      setChannels(jsonData)
+      console.log(JSON.stringify(response.data.data))
+    } catch (error) {
+      console.log("error fetching channels:", error);
+    }
+  }
+
+
+  useEffect(() => {
+    getChannels();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <div className="search-results-container">
       <h1>Top 5 Search Results: {searchTerm}</h1>
-      {searchResults.map((result) => (
-        <div className="search-result-item" key={result.id}>
-          <a href={`/channel/${result.id}`}>
-          <img src={result.thumbnail} alt={result.channelName} />
+      {channels.map((result) => 
+        (
+        <div className="search-result-item" key={result.snippet.channelId}>
+          <a href={`/channel?channel_id=${result.snippet.channelId}`}>
+            <img src={result.snippet.thumbnails.default.url} alt={result.snippet.title} />
           </a>
           <div className="result-details">
-          <a href={`/channel/${result.id}`}>
-            <h3>{result.channelName}</h3>
+            <a href={`/channel?channel_id=${result.snippet.channelId}&channel_name=${result.snippet.title}&img=${result.snippet.thumbnails.default.url}`}>
+              <h3 >{result.snippet.title}</h3>
             </a>
-            <a href={`/channel/${result.id}`}>
-            <p>{result.subscribeAccount}</p>
+            <a href={`/channel?channel_id=${result.snippet.channelId}`}>
+              <p>{"Subcount"}</p>
             </a>
           </div>
         </div>
       ))}
+    
+    
+      
     </div>
   );
 };
+
+
 
 
 export default SearchResultPage;

@@ -4,16 +4,18 @@ require('dotenv').config();
 //require('dotenv').config({path:'../.env'})
 //require("dotenv").config({ path: __dirname + `/../.env.test` }); 
 
-
+const cors = require('cors');
 const {google} = require('googleapis');
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 8000;
 // const baseUrl = "https://www.googleapis.com/youtube/v3"
 const YouTube = google.youtube({
     version: 'v3',
     auth: process.env.APIKEY,  
 });
+
+app.use(cors());
 
 // Basic get call
 app.get('/', (req, res) => {
@@ -22,7 +24,7 @@ app.get('/', (req, res) => {
 
 // Making sure server works
 app.listen(port, () => {
-    console.log("App is running.");
+    console.log(`Server is running on port ${port}`);
 });
 
 function toDictionary (titles, channelIDs) {
@@ -32,23 +34,16 @@ function toDictionary (titles, channelIDs) {
     }
     return dict
 }
-
-
-
+// Use to find the 5 most likely channels
 app.get('/search-with-googleapis', asyncHandler(async (req, res, next) => {
-    let searchQuery = req.query.search_query;
+    let searchQuery = req.query.search_query; // Access the search term from the route parameters
     let response = await YouTube.search.list({
         part: "snippet",
         q: searchQuery,
         type: 'channel',
         maxResults: 5,
     });
-        
-    // Break down to just titles
-    const titles = response.data.items.map((item) => item.snippet.title);
-    const channelIDs = response.data.items.map((item) => item.snippet.channelId)
-    let channels = toDictionary(titles, channelIDs)
-    res.send(channels)
+    res.json(response)
 }));
 
 var secondCall = require('./sentiment.js');
@@ -127,4 +122,45 @@ app.get('/comment-threads', asyncHandler(async (req, res, next) => {
     }
     console.log(sum);
 
+}));
+
+
+app.get('/list-videos', asyncHandler(async (req, res, next) => {
+    const channelID = req.query.channel_id;
+    const response = await YouTube.search.list({
+        part: "snippet",
+        channelId: channelID,
+        type: 'video',
+        maxResults: 9,
+        order: 'rating',
+    });
+
+    res.json(response)
+
+}));
+
+app.get('/videos-info', asyncHandler(async (req, res, next) => {
+    const videoID = req.query.video_id;
+    const response = await YouTube.videos.list({
+        part: "snippet",
+        id: videoID,
+        maxResults: 9,
+    });
+
+    res.json(response)
+
+}));
+
+// Find information of specific profile from channelId
+app.get('/channel-stats', asyncHandler(async (req, res, next) => {
+    let channelID = req.query.channel_id; // Access the search term from the route parameters
+    let response = await YouTube.channels.list({
+        part: "statistics",
+        id: channelID,
+        maxResults: 10,
+    });
+        
+    res.json(response)
+
+    
 }));

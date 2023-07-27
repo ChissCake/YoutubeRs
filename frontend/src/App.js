@@ -37,7 +37,7 @@ function App() {
 
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/result' element={<Result />} />
-        <Route path="/channel/:channelId" element={<ChannelPage/>} />
+        <Route path="/channel/" element={<ChannelPage/>} />
       </Routes>
       </div>
      

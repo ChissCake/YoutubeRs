@@ -1,112 +1,68 @@
+/* eslint-disable jsx-a11y/alt-text */
 // ChannelPage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './channelPage.css';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const ChannelPage = () => {
-  const { channelId } = useParams();
-
+  //const { channelId } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const channelId = searchParams.get('channel_id');
+  const channelName = searchParams.get('channel_name');
+  const channelPFP = searchParams.get('img');
+  
   // Replace this static content with actual data fetched from an API or other source
-  const channelData = {
-    videoId1: {
-      channelName: 'Channel 1',
-      thumbnail: 'https://example.com/thumbnail1.jpg',
-      subscribeAccount: '@CapstoneYouTubeRs',
-      description: 'Welcome to Channel 1! This is a sample channel page for Channel 1.',
-      reviews: 100, 
-    },
-    videoId2: {
-      channelName: 'Channel 2',
-      description: 'Welcome to Channel 2! This is a sample channel page for Channel 2.',
-      reviews: 100, 
-    },
-    videoId3: {
-      channelName: 'Channel 3',
-      description: 'Welcome to Channel 3! This is a sample channel page for Channel 3.',
-      reviews: 100, 
-    },
-    videoId4: {
-      channelName: 'Channel 4',
-      description: 'Welcome to Channel 4! This is a sample channel page for Channel 4.',
-      reviews: 100, 
-    },
-    videoId5: {
-      channelName: 'Channel 5',
-      description: 'Welcome to Channel 5! This is a sample channel page for Channel 5.',
-      reviews: 100, 
-    },
-  };
+  const [videos, setVideos] = useState([]);
+  const [channel, setChannel] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const samplePictures = [
-    {
-      id: 'picture1',
-      thumbnail: 'https://example.com/picture1.jpg',
-      likes: 500,
-      views: 15000,
-    },
-    {
-      id: 'picture2',
-      thumbnail: 'https://example.com/picture2.jpg',
-      likes: 300,
-      views: 7500,
-    },
+  const getVideos = async () =>{
+    try {
+      const response = await axios.get(`/list-videos?channel_id=${channelId}`);
+      console.log("It fetched the data")
+      const jsonData = response.data.data.items
+      setVideos(jsonData)
+      //console.log(JSON.stringify(jsonData))
+    } catch (error) {
+      console.log("error fetching channels:", error);
+    }
+  }
 
-    {
-      id: 'picture3',
-      thumbnail: 'https://example.com/picture2.jpg',
-      likes: 300,
-      views: 7500,
-    },
+  const getChannel = async () =>{
+    try {
+      const response = await axios.get(`/channel-stats?channel_id=${channelId}`);
+      console.log("It fetched the data")
+      const jsonData = response.data.data
+      setChannel(jsonData.items[0])
+      setLoading(false)
+      console.log(JSON.stringify(jsonData))
+      
+    } catch (error) {
+      console.log("error fetching channels:", error);
+      setLoading(false)
+    }
+  }
 
-    {
-      id: 'picture4',
-      thumbnail: 'https://example.com/picture2.jpg',
-      likes: 300,
-      views: 7500,
-    },
-
-    {
-      id: 'picture5',
-      thumbnail: 'https://example.com/picture2.jpg',
-      likes: 300,
-      views: 7500,
-    },
-
-    {
-      id: 'picture6',
-      thumbnail: 'https://example.com/picture2.jpg',
-      likes: 300,
-      views: 7500,
-    },
-
-    {
-      id: 'picture7',
-      thumbnail: 'https://example.com/picture2.jpg',
-      likes: 300,
-      views: 7500,
-    },
-    {
-      id: 'picture8',
-      thumbnail: 'https://example.com/picture2.jpg',
-      likes: 300,
-      views: 7500,
-    },
-
-    {
-      id: 'picture9',
-      thumbnail: 'https://example.com/picture2.jpg',
-      likes: 300,
-      views: 7500,
-    },
-
- 
+  useEffect(() => {
+    //getVideos();
+    getChannel();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  const channelData = {  
+    channelName: channelId,
+    thumbnail: 'https://example.com/thumbnail1.jpg',
+    subscribeAccount: '@CapstoneYouTubeRs',
+    description: 'Welcome to Channel 1! This is a sample channel page for Channel 1.',
+    reviews: 100, 
     
-  ];
-
-  const currentChannel = channelData[channelId] || {
-    channelName: 'Unknown Channel',
-    description: 'This channel information is not available.',
   };
+
+
+// Filter stuff
 
   const [filters, setFilters] = useState({
     relevance: true, // Filter by relevance (default: true)
@@ -134,12 +90,25 @@ const ChannelPage = () => {
 
   return (
     <div className="channel-container">
-      <h1>{currentChannel.channelName}</h1>
       
-      <img src={currentChannel.thumbnail} alt={currentChannel.channelName} />
-      <p>{currentChannel.subscribeAccount}</p>
 
-      <p>{currentChannel.description}</p>
+    {/* <div>
+      <h1>channel name</h1>
+      <img src={channel.snippet.thumbnails.default.url} alt={channel.snippet.title} />
+      <p></p>
+      <p>{channel.snippet.description}</p>
+    </div> */}
+      {loading ? ( // Show loading message or spinner while waiting for data
+        <div>Loading...</div>
+      ) : channel ? ( // Check if channel data is available
+        <div>
+          <h1>{channelName}</h1>
+          <img src={channelPFP} />
+          <p>Sub Count: {channel.statistics.subscriberCount}</p>
+        </div>
+      ) : ( // Channel data not available (e.g., no channel found with the given ID)
+        <div>Channel not found</div>
+      )}
 
       <div className="filter-section">
         <label>
@@ -164,13 +133,14 @@ const ChannelPage = () => {
       <div style={{ marginBottom: '50px' }}></div>
       <div className="sample-pictures-container">
       <div className="grid-container">
-        {samplePictures.map((picture) => (
-          <div key={picture.id} className="grid-item">
-            <img src={picture.thumbnail} alt={`Picture ${picture.id}`} />
-            <p>Likes: {picture.likes}</p>
-            <p>Total Views: {picture.views}</p>
+          
+        {/* {videos.map((video) => (
+          <div key={video.id} className="grid-item">
+            <img src={video.snippet.thumbnails.default.url} />
+            <p>Likes: 1</p>
+            <p>Total Views: 1</p>
           </div>
-        ))}
+        ))} */}
       </div>
       </div>
     </div>
