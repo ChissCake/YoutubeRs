@@ -83,11 +83,13 @@ app.get('/channel-videos', asyncHandler(async (req, res, next) => {
                 sum = sum + secondCall(comment[i]);
             }
         }
-        ratings.push([titles[c], ids[c], sum]);
+        ratings.push([titles[c], sum]);
+        console.log(ratings[c]);
     }
+    console.log("\n\n");
     ratings.sort(function (a, b)
     {
-        if(a[2]<b[2]){
+        if(a[1]<b[1]){
             return 1;
         } else {
             return -1;
